@@ -1,17 +1,16 @@
-import { ADD_BOOKING, SET_BOOKINGS, setBookings } from '../actions/bookingActions'
+import { CREATE_BOOKING, SET_BOOKINGS, setBookings, createBooking } from '../actions/bookingActions'
 
-const initState = {
-    bookings: []
-}
+const initState = [];
 
 const baseApiAddress = "http://localhost:5000/bookings";
 
 export const bookingReducers = (state = initState, action) =>{
     switch(action.type){
-        case ADD_BOOKING: 
-            return {...state, bookings: [...state.bookings, action.payload]}        
+        case CREATE_BOOKING: 
+        if(!state.bookings.includes(action.payload))
+            state.bookings.push(action.payload);        
         case SET_BOOKINGS: 
-            return {...state, bookings: action.payload}
+            return action.payload;
         default: return state;
     }
 }
@@ -22,17 +21,17 @@ export const fetchBookings = () => async (dispatch, getState) => {
     dispatch(setBookings(bookings));
 }
 
-export const addBooking = () => async (dispatch, getState) => {
-    const bookings = getState().bookings;
+export const addBooking = (newBooking) => async (dispatch, getState) => {
     await fetch(baseApiAddress, {
         method: "POST",
         headers: {
             'Accept': 'application/json',
             'Content-type': 'application/json'
         },
-        body: JSON.stringify(bookings)
+        body: JSON.stringify(newBooking)
     })
     alert("Saved")
+    dispatch(createBooking(newBooking));
 }
 
 export default bookingReducers;

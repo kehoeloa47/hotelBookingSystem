@@ -11,33 +11,28 @@ import {TiTickOutline, TiTimesOutline} from "react-icons/ti";
 
 const CheckRooms = () => {
     const [date, setDate] = useState(new Date());
-    const [room, setRoom] = useState(101);
+    const [room, setRoom] = useState("");
     const [roomIsAvailable, setRoomIsAvailable] = useState(false);
 
     const bookings = useSelector((state) => state.bookings);    
     const dispatch = useDispatch();
 
 const handleCheckAvailability= (event) => {
-    event.preventDefault();
-        console.log(date.toLocaleDateString())
-        console.log(room)
-
-        if(bookings.bookings.some(obj => obj.room == room && obj.date == date.toLocaleDateString())){
+    event.preventDefault();  
+        if(bookings.some(obj => obj.room == room && obj.date == date.toLocaleDateString())){
             setRoomIsAvailable(false);
         }
         else{
             setRoomIsAvailable(true);
         }
-        console.log(roomIsAvailable);
 }
 
 useEffect(() => {
-    getBookings()
-    console.log(date);
+    getBookings();
 }, []);
 
 const getBookings = () => {
-    dispatch(fetchBookings())
+    dispatch(fetchBookings());
 }
 
     return(
@@ -75,6 +70,7 @@ const getBookings = () => {
             <button 
                 type='submit' 
                 onClick={handleCheckAvailability}
+                className="btn btn-primary"
                 >
                 Check
             </button>

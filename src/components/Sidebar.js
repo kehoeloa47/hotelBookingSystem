@@ -13,7 +13,7 @@ function Sidebar(){
                 <Link to='/AddBooking'>
                 <li className='SideBar-links'>Add Booking</li>
                 </Link>
-                <Link to='CheckRooms'>
+                <Link to='CheckRoomAvailability'>
                 <li className='SideBar-links'>Check Room</li>
                 </Link>
             </ul>

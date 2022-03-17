@@ -1,84 +1,107 @@
+import React from 'react';
 import {useState, useEffect} from 'react';
 import DatePicker from '@mui/lab/DatePicker';
-import {TextField, Select, MenuItem} from '@mui/material';
+import {Select, MenuItem, TextField} from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addBooking } from '../store/reducers/bookingsReducer';
+import { fetchBookings } from '../store/reducers/bookingsReducer';
+import Button from './Button';
 
 const AddBooking = () => {
-    const [date, setDate] = useState(new Date());
-    const [room, setRoom] = useState(101);
-    const [surname, setSurname] = useState('');
+  const [date, setDate] = useState(new Date());
+  const [room, setRoom] = useState("");
+  const [booking, setBooking] = useState({
+      surname: "",
+      room: "",
+      date: new Date()
+  });
 
-    const dispatch = useDispatch();
+  useEffect(() => {
+      getBookings();
+  }, []);
 
+  const dispatch = useDispatch();
 
-    const onSubmit = (e) => {
-        e.preventDefault();
+  const onSubmit = (e) => {
+      e.preventDefault();
 
+      dispatch(addBooking(booking));
 
-        dispatch(addBooking(e.target.value))
+      setBooking({
+          surname: "",
+          room: "",
+          date: new Date()
+      })
+  } 
 
-        setSurname('');
-        setDate('');
-    } 
+  const getBookings = () => {
+      dispatch(fetchBookings());
+  }
 
-    const handleDateChange = (e) => {
-        setDate(e.target.value);
-    }
-
-    const handleRoomChange = (e) => {
-        setRoom(e.target.value);
-    }
-
-    const handleNameChange = (e) => {
-        setSurname(e.target.value);
-    }
-
-    return(
+  return(
+      <div className="container">
         <form>
-            <div className='form-control'>
-                <h2>Add Booking</h2>
-                <hr/>
-            </div>
-            <div className='mb-3'>
-                <label className='form-label'>
-                    Surname
-                </label>                
-                <input 
-                    className='form-control'
-                    type='text'
-                    placeholder='Surname'
-                    onChange={handleNameChange}
-                    />
-            </div>
-            <div className='form-control'>
-                <label className="form-label">Room</label>
+          <h3>Add Booking</h3>
+          <hr/>
+          <ul className="flex-outer">
+            <li>
+                <label>Surname</label>
+                <TextField 
+                      className='form-control'
+                      type='text'
+                      placeholder='Surname'
+                      onChange={(e) => {setBooking({...booking, surname: e.target.value})}}
+                />
+            </li>
+            <li>
+              <label>Room</label>
+              <div className="option">
                 <Select
-                label="Select a room"
-                onChange={handleRoomChange}
-                value={room}
-                >
-                    <MenuItem value={101}>101</MenuItem>
-                    <MenuItem value={102}>102</MenuItem>
-                    <MenuItem value={103}>103</MenuItem>
-                </Select>
-            </div>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                    label="Date desktop"
-                    inputFormat="MM/dd/yyyy"
-                    value={date}
-                    onChange={date => handleDateChange(date)}
-                    renderInput={(props) => <TextField {...props}
-                />}
-            />
-            </LocalizationProvider>
-            <button onClick={onSubmit}>
-                Add
-            </button>
+                      id="select-mui"
+                      onChange={(event) => setRoom(event.target.value)}
+                      label="Select a room"
+                      labelId="select-room"
+                      value={room}
+                      fullWidth
+                  >
+                    <MenuItem value="none" disabled>
+                      Select a room
+                    </MenuItem>
+                      <MenuItem value={101}>101</MenuItem>
+                      <MenuItem value={102}>102</MenuItem>
+                      <MenuItem value={103}>103</MenuItem>
+                  </Select>
+              </div>
+            </li>
+            <li>
+              <label>Date</label>
+              <div className="option">
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DatePicker
+                            label="Pick a date"
+                            inputFormat="dd/MM/yyyy"
+                            value={date}
+                            name="date"
+                            onChange={(newDate) => setDate(newDate)}
+                            renderInput={(props) => <TextField {...props} />}
+                            fullWidth
+                        />
+                    </LocalizationProvider>
+              </div>
+            </li>          
+            <li>
+              <Button
+                label='Add'
+                type='submit'
+                onClick={onSubmit}
+                className="btn btn-primary"
+              />
+            </li>
+          </ul>
         </form>
+      </div>
     )
 }
 

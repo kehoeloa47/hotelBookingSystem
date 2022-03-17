@@ -1,19 +1,19 @@
 {
-    "bookings": [
-      {
-        "surname":"bloggs",
-        "room": "202",
-        "date": "15/03/2022"
-    },
-    {
-        "surname":"kehoe",
-        "room": "101",
-        "date": "15/03/2022"
-    },
-    {
-        "surname":"kehoe",
-        "room": "104",
-        "date": "16/03/2022"
-    }
+    "bookings":[
+        {
+            "surname":"bloggs",
+            "room": "202",
+            "date": "15/03/2022"
+        },
+        {
+            "surname":"jones",
+            "room": "101",
+            "date": "15/03/2022"
+        },
+        {
+            "surname":"smith",
+            "room": "104",
+            "date": "16/03/2022"
+        }    
     ]
-  }
+}

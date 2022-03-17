@@ -1,11 +1,11 @@
 //Constants
 export const SET_BOOKINGS = "SET_BOOKINGS";
-export const ADD_BOOKING = "ADD_BOOKING";
+export const CREATE_BOOKING = "CREATE_BOOKING";
 
 
-export const addBooking = (booking) => {
+export const createBooking = (booking) => {
     return{
-            type: ADD_BOOKING,
+            type: CREATE_BOOKING,
             payload: booking
         }
 }
